@@ -5,6 +5,14 @@ PRINT N'Dropping index IX_OrganizationUser_UserIdOrganizationIdStatus...';
 DROP INDEX IF EXISTS [IX_OrganizationUser_UserIdOrganizationIdStatus]
     ON [dbo].[OrganizationUser];
 
+-- I had this constraint in my local db that needed dropping, even though I can't find any reference to it
+-- in our Sql project; drop it if it exists to be safe
+IF OBJECT_ID('[dbo].[DF_OrganizationUser_AccessAll]', 'D') IS NOT NULL
+BEGIN
+    ALTER TABLE [dbo].[OrganizationUser] DROP CONSTRAINT [DF_OrganizationUser_AccessAll];
+END
+GO
+
 -- Drop the column
 IF COL_LENGTH('[dbo].[OrganizationUser]', 'AccessAll') IS NOT NULL
 BEGIN
